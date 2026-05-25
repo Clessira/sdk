@@ -1,0 +1,35 @@
+name: sdk-js
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "js/**"
+      - ".github/workflows/sdk-js.yml"
+  pull_request:
+    paths:
+      - "js/**"
+      - ".github/workflows/sdk-js.yml"
+
+defaults:
+  run:
+    working-directory: js
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["18", "20", "22"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: js/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build

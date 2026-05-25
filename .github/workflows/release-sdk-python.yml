@@ -1,0 +1,36 @@
+name: release-sdk-python
+
+# Triggered manually by pushing a tag like `sdk-python-v0.1.0`.
+# Requires PyPI Trusted Publishing to be configured for `nowdoing-sdk`
+# (https://docs.pypi.org/trusted-publishers/) — no PYPI_API_TOKEN secret
+# needed.
+
+on:
+  push:
+    tags:
+      - "sdk-python-v*"
+
+defaults:
+  run:
+    working-directory: python
+
+permissions:
+  contents: read
+  id-token: write  # for PyPI Trusted Publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi-publish
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install build
+      - run: pip install -e ".[test]"
+      - run: pytest -q
+      - run: python -m build
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist

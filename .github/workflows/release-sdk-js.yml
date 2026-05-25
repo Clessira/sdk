@@ -1,0 +1,36 @@
+name: release-sdk-js
+
+# Triggered manually by pushing a tag like `sdk-js-v0.1.0`.
+# Requires npm Trusted Publishing to be configured for @nowdoing/sdk
+# (https://docs.npmjs.com/trusted-publishers) — no NPM_TOKEN secret needed.
+
+on:
+  push:
+    tags:
+      - "sdk-js-v*"
+
+defaults:
+  run:
+    working-directory: js
+
+permissions:
+  contents: read
+  id-token: write  # for npm Trusted Publishing + provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm-publish
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+          cache: npm
+          cache-dependency-path: js/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm publish --access public --provenance
