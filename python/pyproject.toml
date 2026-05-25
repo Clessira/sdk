@@ -23,16 +23,16 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Typing :: Typed",
 ]
-dependencies = ["httpx>=0.27"]
+dependencies = ["httpx==0.28.1"]
 
 [project.urls]
-Homepage = "https://github.com/nowdoingapp/nowdoingmac/tree/main/sdks/python"
-Repository = "https://github.com/nowdoingapp/nowdoingmac"
-Issues = "https://github.com/nowdoingapp/nowdoingmac/issues"
-Changelog = "https://github.com/nowdoingapp/nowdoingmac/blob/main/sdks/python/CHANGELOG.md"
+Homepage = "https://github.com/NowDoingApp/sdk/tree/main/python"
+Repository = "https://github.com/NowDoingApp/sdk"
+Issues = "https://github.com/NowDoingApp/sdk/issues"
+Changelog = "https://github.com/NowDoingApp/sdk/blob/main/python/CHANGELOG.md"
 
 [project.optional-dependencies]
-test = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+test = ["pytest==9.0.3", "pytest-asyncio==1.3.0"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/nowdoing"]

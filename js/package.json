@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "description": "Client SDK for the NowDoing macOS app loopback HTTP API.",
   "keywords": ["nowdoing", "time-tracking", "macos", "sdk", "client"],
-  "homepage": "https://github.com/nowdoingapp/nowdoingmac/tree/main/sdks/js",
+  "homepage": "https://github.com/NowDoingApp/sdk/tree/main/js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nowdoingapp/nowdoingmac.git",
-    "directory": "sdks/js"
+    "url": "git+https://github.com/NowDoingApp/sdk.git",
+    "directory": "js"
   },
-  "bugs": "https://github.com/nowdoingapp/nowdoingmac/issues",
+  "bugs": "https://github.com/NowDoingApp/sdk/issues",
   "license": "MIT",
   "author": "Mattes <m.mattes@meey.de>",
   "type": "module",
@@ -41,10 +41,10 @@
     "prepublishOnly": "npm run typecheck && npm run test && npm run build"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
-    "tsup": "^8.0.0",
-    "typescript": "^5.4.0",
-    "vitest": "^1.6.0"
+    "@types/node": "22.19.19",
+    "tsup": "8.5.1",
+    "typescript": "5.9.3",
+    "vitest": "4.1.7"
   },
   "publishConfig": {
     "access": "public",
