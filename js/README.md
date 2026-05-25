@@ -19,7 +19,7 @@ pnpm add @nowdoing/sdk
 bun add @nowdoing/sdk
 ```
 
-Node ≥ 18 (uses built-in `fetch` and `node:crypto`). Browser is intentionally
+Node ≥ 20 (uses built-in `fetch` and `node:crypto`; Node 18 went EOL in April 2025). Browser is intentionally
 unsupported — the listener binds to loopback and most browsers refuse CORS to
 `127.0.0.1`.
 

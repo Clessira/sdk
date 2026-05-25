@@ -12,7 +12,7 @@ for you — you call the methods, they sign the requests.
 
 | SDK | Package | Runtime | Path |
 |---|---|---|---|
-| JavaScript / TypeScript | [`@nowdoing/sdk`](js/README.md) | Node ≥ 18 / Bun / Deno | [`js/`](js/) |
+| JavaScript / TypeScript | [`@nowdoing/sdk`](js/README.md) | Node ≥ 20 / Bun / Deno | [`js/`](js/) |
 | Python (sync + async) | [`nowdoing-sdk`](python/README.md) | Python ≥ 3.10 | [`python/`](python/) |
 
 Both SDKs wrap the same five endpoints — `GET /healthcheck`, `GET /current`,
