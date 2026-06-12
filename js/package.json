@@ -11,7 +11,7 @@
   },
   "bugs": "https://github.com/Clessira/sdk/issues",
   "license": "MIT",
-  "author": "Clessira <hello@nowdoing.app>",
+  "author": "Clessira <hello@clessira.app>",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
