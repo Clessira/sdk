@@ -1,6 +1,6 @@
 # @nowdoing/sdk (JavaScript / TypeScript)
 
-Client SDK for the [NowDoing](https://github.com/nowdoingapp/nowdoingmac) macOS
+Client SDK for the [NowDoing](https://github.com/Clessira/NowDoingMac) macOS
 app's loopback HTTP API. Use it from editor plugins, CLIs, build hooks, or any
 Node / Bun / Deno tool that wants to read the currently-tracked activity or
 push events (branch switches, search, start) into the app.

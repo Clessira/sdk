@@ -1,6 +1,6 @@
 # NowDoing SDKs
 
-First-party client SDKs for the [NowDoing](https://github.com/NowDoingApp/NowDoingMac)
+First-party client SDKs for the [NowDoing](https://github.com/Clessira/NowDoingMac)
 macOS app's loopback HTTP API. Use them from editor plugins, CLIs, build hooks
 or any tool that wants to read the currently-tracked activity or push events
 (branch switches, search, start) into the app.
@@ -59,4 +59,4 @@ in the Mac app repo; when it changes, both SDKs must move in lockstep.
 
 ## License
 
-Same license as the Mac app — see [NowDoingMac](https://github.com/NowDoingApp/NowDoingMac).
+Same license as the Mac app — see [NowDoingMac](https://github.com/Clessira/NowDoingMac).

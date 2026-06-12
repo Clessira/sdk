@@ -6,9 +6,12 @@ All notable changes to `nowdoing-sdk` are documented here. Format follows
 
 ## Unreleased
 
+- Repository moved to the Clessira GitHub organization
+  (`https://github.com/Clessira/sdk`). Package name (`nowdoing-sdk`) and
+  functionality unchanged.
 - Pinned runtime + test dependencies to exact versions: `httpx==0.28.1`,
   `pytest==9.0.3`, `pytest-asyncio==1.3.0`.
-- Repository/homepage/issues URLs updated to point at `NowDoingApp/sdk`
+- Repository/homepage/issues URLs updated to point at `Clessira/sdk`
   (SDK code now lives in its own repo, vendored back into NowDoingMac as a
   submodule).
 

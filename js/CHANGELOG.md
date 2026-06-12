@@ -6,6 +6,9 @@ All notable changes to `@nowdoing/sdk` are documented here. Format follows
 
 ## Unreleased
 
+- Repository moved to the Clessira GitHub organization
+  (`https://github.com/Clessira/sdk`). Package name (`@nowdoing/sdk`) and
+  functionality unchanged.
 - Bumped and pinned dev dependencies: `@types/node` 22.19.19, `tsup` 8.5.1,
   `typescript` 5.9.3, `vitest` 4.1.7. Vitest 4 migration was clean (21/21
   pass); TypeScript was pinned to 5.9 because tsup 8.5's DTS pipeline still
@@ -14,7 +17,7 @@ All notable changes to `@nowdoing/sdk` are documented here. Format follows
   internally, which calls `node:util.styleText` — added in Node 20.12. Node
   18 went EOL in April 2025. CI matrix is now `20`, `22`, `24`; release
   workflow uses Node 22 (current LTS).
-- Repository/homepage/issues URLs updated to point at `NowDoingApp/sdk`
+- Repository/homepage/issues URLs updated to point at `Clessira/sdk`
   (SDK code now lives in its own repo, vendored back into NowDoingMac as a
   submodule).
 

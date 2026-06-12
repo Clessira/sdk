@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "description": "Client SDK for the NowDoing macOS app loopback HTTP API.",
   "keywords": ["nowdoing", "time-tracking", "macos", "sdk", "client"],
-  "homepage": "https://github.com/NowDoingApp/sdk/tree/main/js",
+  "homepage": "https://github.com/Clessira/sdk/tree/main/js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NowDoingApp/sdk.git",
+    "url": "git+https://github.com/Clessira/sdk.git",
     "directory": "js"
   },
-  "bugs": "https://github.com/NowDoingApp/sdk/issues",
+  "bugs": "https://github.com/Clessira/sdk/issues",
   "license": "MIT",
   "author": "NowDoing <hello@nowdoing.app>",
   "type": "module",
