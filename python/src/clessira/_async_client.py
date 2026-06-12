@@ -1,4 +1,4 @@
-"""Asynchronous NowDoing HTTP client."""
+"""Asynchronous Clessira HTTP client."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ from ._base import (
     parse_status,
     resolve_config,
 )
-from .errors import NowDoingError
+from .errors import ClessiraError
 from .models import (
     ActivitySearchItem,
     CurrentActivity,
@@ -32,12 +32,12 @@ from .models import (
 )
 
 
-class AsyncNowDoingClient:
-    """Async client for the NowDoing loopback HTTP API.
+class AsyncClessiraClient:
+    """Async client for the Clessira loopback HTTP API.
 
     Example::
 
-        async with AsyncNowDoingClient(token="...") as client:
+        async with AsyncClessiraClient(token="...") as client:
             await client.healthcheck()
             current = await client.get_current()
     """
@@ -56,7 +56,7 @@ class AsyncNowDoingClient:
         self._owns_http = http_client is None
         self._http: httpx.AsyncClient = http_client or httpx.AsyncClient(timeout=timeout)
 
-    async def __aenter__(self) -> "AsyncNowDoingClient":
+    async def __aenter__(self) -> "AsyncClessiraClient":
         return self
 
     async def __aexit__(
@@ -141,5 +141,5 @@ class AsyncNowDoingClient:
                 content=body_bytes if body is not None else None,
             )
         except httpx.HTTPError as exc:
-            raise NowDoingError(f"network error: {exc}") from exc
+            raise ClessiraError(f"network error: {exc}") from exc
         return handle_response(response.status_code, response.text)

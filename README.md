@@ -1,6 +1,6 @@
-# NowDoing SDKs
+# Clessira SDKs
 
-First-party client SDKs for the [NowDoing](https://github.com/Clessira/NowDoingMac)
+First-party client SDKs for the [Clessira](https://github.com/Clessira/NowDoingMac)
 macOS app's loopback HTTP API. Use them from editor plugins, CLIs, build hooks
 or any tool that wants to read the currently-tracked activity or push events
 (branch switches, search, start) into the app.
@@ -12,18 +12,18 @@ for you — you call the methods, they sign the requests.
 
 | SDK | Package | Runtime | Path |
 |---|---|---|---|
-| JavaScript / TypeScript | [`@nowdoing/sdk`](js/README.md) | Node ≥ 20 / Bun / Deno | [`js/`](js/) |
-| Python (sync + async) | [`nowdoing-sdk`](python/README.md) | Python ≥ 3.10 | [`python/`](python/) |
+| JavaScript / TypeScript | [`@clessira/sdk`](js/README.md) | Node ≥ 20 / Bun / Deno | [`js/`](js/) |
+| Python (sync + async) | [`clessira-sdk`](python/README.md) | Python ≥ 3.10 | [`python/`](python/) |
 
 Both SDKs wrap the same five endpoints — `GET /healthcheck`, `GET /current`,
 `GET /activities/search`, `POST /activities/start`, `POST /branch-changed` —
 with a typed error hierarchy that maps `400 / 401 / 404 / 409 / 503` to
-dedicated exception classes, plus env-var fallbacks (`NOWDOING_TOKEN`,
-`NOWDOING_PORT`).
+dedicated exception classes, plus env-var fallbacks (`CLESSIRA_TOKEN`,
+`CLESSIRA_PORT`).
 
 ## Enable the HTTP API
 
-Open **NowDoing → Einstellungen → Integrationen → HTTP-API** and turn on
+Open **Clessira → Einstellungen → Integrationen → HTTP-API** and turn on
 **Aktiviert**. By default the listener stays off — the VSCode extension uses a
 separate Unix Domain Socket and doesn't need the TCP listener. Once enabled,
 the same shared token is reused; copy it from the Integrationen pane or via
@@ -33,8 +33,8 @@ the same shared token is reused; copy it from the Integrationen pane or via
 
 ```
 sdks/
-├── js/                    @nowdoing/sdk      — TypeScript, ESM + CJS, vitest
-├── python/                nowdoing-sdk       — sync + async via httpx, pytest
+├── js/                    @clessira/sdk      — TypeScript, ESM + CJS, vitest
+├── python/                clessira-sdk       — sync + async via httpx, pytest
 └── .github/workflows/     build + Trusted-Publishing release pipelines
 ```
 
@@ -43,8 +43,8 @@ sdks/
 Each SDK ships independently. Tagging from this repo triggers OIDC-based
 Trusted Publishing (no `NPM_TOKEN` / `PYPI_API_TOKEN` secrets):
 
-- `sdk-js-v*`     → `release-sdk-js.yml`     → npm
-- `sdk-python-v*` → `release-sdk-python.yml` → PyPI
+- `sdk-js-v*`     → `release-sdk-js.yml`     → npm (@clessira/sdk)
+- `sdk-python-v*` → `release-sdk-python.yml` → PyPI (clessira-sdk)
 
 Build + test workflows (`sdk-js.yml`, `sdk-python.yml`) run on every push and
 PR against the affected SDK's directory.

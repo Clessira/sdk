@@ -1,4 +1,4 @@
-from nowdoing._auth import make_nonce, sha256_hex, sign_request, timestamp_seconds
+from clessira._auth import make_nonce, sha256_hex, sign_request, timestamp_seconds
 
 
 def test_sha256_empty_body_matches_canonical_constant() -> None:

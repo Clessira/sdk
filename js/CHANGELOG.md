@@ -1,14 +1,23 @@
 # Changelog
 
-All notable changes to `@nowdoing/sdk` are documented here. Format follows
+All notable changes to `@clessira/sdk` (formerly `@nowdoing/sdk`) are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com); the project uses
 [SemVer](https://semver.org).
 
 ## Unreleased
 
-- Repository moved to the Clessira GitHub organization
-  (`https://github.com/Clessira/sdk`). Package name (`@nowdoing/sdk`) and
-  functionality unchanged.
+- **BREAKING: Rebranded all exports from NowDoing to Clessira.** Package name
+  renamed `@nowdoing/sdk` → `@clessira/sdk`. HTTP auth headers renamed
+  `X-NowDoing-*` → `X-Clessira-*` (Token, Timestamp, Nonce, Signature) —
+  requires a matching Mac app build with updated `BranchChangeServer`. Environment
+  variables renamed `NOWDOING_TOKEN`/`NOWDOING_PORT` → `CLESSIRA_TOKEN`/`CLESSIRA_PORT`.
+  All exported symbols renamed: `NowDoingClient` → `ClessiraClient`,
+  `NowDoingClientOptions` → `ClessiraClientOptions`, `NowDoingError` →
+  `ClessiraError`, `NowDoingHttpError` → `ClessiraHttpError`,
+  `NowDoingAuthError` → `ClessiraAuthError`, `NowDoingValidationError` →
+  `ClessiraValidationError`, `NowDoingNotFoundError` → `ClessiraNotFoundError`,
+  `NowDoingReplayError` → `ClessiraReplayError`, `NowDoingUnavailableError` →
+  `ClessiraUnavailableError`. No backward-compatibility aliases provided.
 - Bumped and pinned dev dependencies: `@types/node` 22.19.19, `tsup` 8.5.1,
   `typescript` 5.9.3, `vitest` 4.1.7. Vitest 4 migration was clean (21/21
   pass); TypeScript was pinned to 5.9 because tsup 8.5's DTS pipeline still

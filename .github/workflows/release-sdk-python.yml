@@ -1,7 +1,7 @@
 name: release-sdk-python
 
 # Triggered manually by pushing a tag like `sdk-python-v0.1.0`.
-# Requires PyPI Trusted Publishing to be configured for `nowdoing-sdk`
+# Requires PyPI Trusted Publishing to be configured for `clessira-sdk`
 # (https://docs.pypi.org/trusted-publishers/) — no PYPI_API_TOKEN secret
 # needed.
 

@@ -30,7 +30,7 @@ def sign_request(
     nonce: str,
     body: bytes,
 ) -> str:
-    """Compute the X-NowDoing-Signature header value.
+    """Compute the X-Clessira-Signature header value.
 
     Canonical string: ``METHOD\\ntarget\\ntimestamp\\nnonce\\nsha256_hex(body)``.
     """

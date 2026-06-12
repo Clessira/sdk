@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 
 import pytest
 
-from nowdoing._auth import sign_request
+from clessira._auth import sign_request
 
 Handler = Callable[["FakeRequest"], "FakeResponse"]
 
@@ -68,10 +68,10 @@ class FakeServer:
                 query = parsed.query
                 headers = {k.lower(): v for k, v in self.headers.items()}
 
-                token = (headers.get("x-nowdoing-token") or "").strip()
-                ts_raw = (headers.get("x-nowdoing-timestamp") or "").strip()
-                nonce = (headers.get("x-nowdoing-nonce") or "").strip().lower()
-                sig = (headers.get("x-nowdoing-signature") or "").strip().lower()
+                token = (headers.get("x-clessira-token") or "").strip()
+                ts_raw = (headers.get("x-clessira-timestamp") or "").strip()
+                nonce = (headers.get("x-clessira-nonce") or "").strip().lower()
+                sig = (headers.get("x-clessira-signature") or "").strip().lower()
 
                 if token != outer.token:
                     return self._send_json(401, {"error": "unauthorized"})

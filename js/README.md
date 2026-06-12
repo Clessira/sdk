@@ -1,6 +1,6 @@
-# @nowdoing/sdk (JavaScript / TypeScript)
+# @clessira/sdk (JavaScript / TypeScript)
 
-Client SDK for the [NowDoing](https://github.com/Clessira/NowDoingMac) macOS
+Client SDK for the [Clessira](https://github.com/Clessira/NowDoingMac) macOS
 app's loopback HTTP API. Use it from editor plugins, CLIs, build hooks, or any
 Node / Bun / Deno tool that wants to read the currently-tracked activity or
 push events (branch switches, search, start) into the app.
@@ -12,11 +12,11 @@ replay protection. This SDK handles all of that for you.
 ## Install
 
 ```sh
-npm install @nowdoing/sdk
+npm install @clessira/sdk
 # or
-pnpm add @nowdoing/sdk
+pnpm add @clessira/sdk
 # or
-bun add @nowdoing/sdk
+bun add @clessira/sdk
 ```
 
 Node ≥ 20 (uses built-in `fetch` and `node:crypto`; Node 18 went EOL in April 2025). Browser is intentionally
@@ -25,24 +25,24 @@ unsupported — the listener binds to loopback and most browsers refuse CORS to
 
 ## Enable the HTTP API
 
-Open **NowDoing → Einstellungen → Integrationen → HTTP-API** and turn on
+Open **Clessira → Einstellungen → Integrationen → HTTP-API** and turn on
 **Aktiviert**. By default the listener stays off — the VSCode extension uses a
 separate Unix Domain Socket and doesn't need the TCP listener. Once enabled,
-NowDoing binds an HTTP server on `127.0.0.1` (default port `39847`) using the
+Clessira binds an HTTP server on `127.0.0.1` (default port `39847`) using the
 same token as the VSCode integration. Pass token and port to the constructor or
 set:
 
 ```sh
-export NOWDOING_TOKEN="…"
-export NOWDOING_PORT=39847   # optional, default
+export CLESSIRA_TOKEN="…"
+export CLESSIRA_PORT=39847   # optional, default
 ```
 
 ## Quickstart
 
 ```ts
-import { NowDoingClient } from "@nowdoing/sdk";
+import { ClessiraClient } from "@clessira/sdk";
 
-const client = new NowDoingClient();
+const client = new ClessiraClient();
 
 await client.healthcheck();
 
@@ -73,16 +73,16 @@ await client.notifyBranchChange({
 
 ## Errors
 
-All exceptions inherit from `NowDoingError`. HTTP failures map to:
+All exceptions inherit from `ClessiraError`. HTTP failures map to:
 
 | Status | Class                       | Typical cause                          |
 | -----: | --------------------------- | -------------------------------------- |
-|    400 | `NowDoingValidationError`   | Bad payload (e.g. empty branch).       |
-|    401 | `NowDoingAuthError`         | Wrong/missing token or bad signature.  |
-|    404 | `NowDoingNotFoundError`     | Activity UUID unknown.                 |
-|    409 | `NowDoingReplayError`       | Nonce already used in last 180 s.      |
-|    503 | `NowDoingUnavailableError`  | Endpoint handler not wired in the app. |
-|  other | `NowDoingHttpError`         | Anything else (incl. 5xx).             |
+|    400 | `ClessiraValidationError`   | Bad payload (e.g. empty branch).       |
+|    401 | `ClessiraAuthError`         | Wrong/missing token or bad signature.  |
+|    404 | `ClessiraNotFoundError`     | Activity UUID unknown.                 |
+|    409 | `ClessiraReplayError`       | Nonce already used in last 180 s.      |
+|    503 | `ClessiraUnavailableError`  | Endpoint handler not wired in the app. |
+|  other | `ClessiraHttpError`         | Anything else (incl. 5xx).             |
 
 Each carries `status: number` and `serverMessage: string`.
 

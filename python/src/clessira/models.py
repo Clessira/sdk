@@ -1,4 +1,4 @@
-"""Typed result objects returned by :class:`NowDoingClient`."""
+"""Typed result objects returned by :class:`ClessiraClient`."""
 
 from __future__ import annotations
 

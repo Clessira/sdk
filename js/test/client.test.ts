@@ -1,21 +1,21 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { NowDoingClient } from "../src/client";
+import { ClessiraClient } from "../src/client";
 import {
-  NowDoingAuthError,
-  NowDoingNotFoundError,
-  NowDoingReplayError,
-  NowDoingValidationError,
+  ClessiraAuthError,
+  ClessiraNotFoundError,
+  ClessiraReplayError,
+  ClessiraValidationError,
 } from "../src/errors";
 import { startFakeServer, type FakeServer, type Handler } from "./fakeServer";
 
 const TOKEN = "test-token-1234567890";
 
-describe("NowDoingClient", () => {
+describe("ClessiraClient", () => {
   let server: FakeServer;
 
-  async function bootClient(handler: Handler): Promise<NowDoingClient> {
+  async function bootClient(handler: Handler): Promise<ClessiraClient> {
     server = await startFakeServer(TOKEN, handler);
-    return new NowDoingClient({ token: TOKEN, port: server.port });
+    return new ClessiraClient({ token: TOKEN, port: server.port });
   }
 
   afterEach(async () => {
@@ -115,20 +115,20 @@ describe("NowDoingClient", () => {
     });
   });
 
-  it("maps 401 to NowDoingAuthError", async () => {
+  it("maps 401 to ClessiraAuthError", async () => {
     server = await startFakeServer("the-real-token", () => ({
       body: { ok: true },
     }));
-    const client = new NowDoingClient({
+    const client = new ClessiraClient({
       token: "wrong-token",
       port: server.port,
     });
     await expect(client.healthcheck()).rejects.toBeInstanceOf(
-      NowDoingAuthError,
+      ClessiraAuthError,
     );
   });
 
-  it("maps 400 to NowDoingValidationError", async () => {
+  it("maps 400 to ClessiraValidationError", async () => {
     const client = await bootClient(() => ({
       status: 400,
       body: { error: "empty branch" },
@@ -136,23 +136,23 @@ describe("NowDoingClient", () => {
     await expect(
       client.notifyBranchChange({ branch: "x" }),
     ).rejects.toMatchObject({
-      constructor: NowDoingValidationError,
+      constructor: ClessiraValidationError,
       serverMessage: "empty branch",
       status: 400,
     });
   });
 
-  it("maps 404 to NowDoingNotFoundError", async () => {
+  it("maps 404 to ClessiraNotFoundError", async () => {
     const client = await bootClient(() => ({
       status: 404,
       body: { error: "activity not found" },
     }));
     await expect(
       client.startActivity({ activityID: "11111111-1111-1111-1111-111111111111" }),
-    ).rejects.toBeInstanceOf(NowDoingNotFoundError);
+    ).rejects.toBeInstanceOf(ClessiraNotFoundError);
   });
 
-  it("maps 409 to NowDoingReplayError on repeated nonce (forced by direct fetch)", async () => {
+  it("maps 409 to ClessiraReplayError on repeated nonce (forced by direct fetch)", async () => {
     // We use the real signer twice with the same nonce by stubbing makeNonce
     // indirectly: just call the client twice — different nonces. To force
     // replay, hit the fake server with a fixed nonce.
@@ -161,10 +161,10 @@ describe("NowDoingClient", () => {
     const ts = Math.floor(Date.now() / 1000).toString();
     const nonce = "fixednoncefixednonce";
     const headers = {
-      "X-NowDoing-Token": TOKEN,
-      "X-NowDoing-Timestamp": ts,
-      "X-NowDoing-Nonce": nonce,
-      "X-NowDoing-Signature": signRequest({
+      "X-Clessira-Token": TOKEN,
+      "X-Clessira-Timestamp": ts,
+      "X-Clessira-Nonce": nonce,
+      "X-Clessira-Signature": signRequest({
         token: TOKEN,
         method: "GET",
         target: "/healthcheck",
@@ -181,24 +181,24 @@ describe("NowDoingClient", () => {
   });
 });
 
-describe("NowDoingClient construction", () => {
+describe("ClessiraClient construction", () => {
   beforeEach(() => {
-    delete process.env.NOWDOING_TOKEN;
-    delete process.env.NOWDOING_PORT;
+    delete process.env.CLESSIRA_TOKEN;
+    delete process.env.CLESSIRA_PORT;
   });
 
   it("throws when no token is provided", () => {
-    expect(() => new NowDoingClient()).toThrow(/token is required/);
+    expect(() => new ClessiraClient()).toThrow(/token is required/);
   });
 
-  it("reads NOWDOING_TOKEN from env", () => {
-    process.env.NOWDOING_TOKEN = "env-token";
-    expect(() => new NowDoingClient()).not.toThrow();
+  it("reads CLESSIRA_TOKEN from env", () => {
+    process.env.CLESSIRA_TOKEN = "env-token";
+    expect(() => new ClessiraClient()).not.toThrow();
   });
 
   it("rejects invalid port", () => {
     expect(
-      () => new NowDoingClient({ token: "t", port: 99999 }),
+      () => new ClessiraClient({ token: "t", port: 99999 }),
     ).toThrow(/invalid port/);
   });
 });

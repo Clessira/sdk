@@ -1,12 +1,12 @@
-export { NowDoingClient } from "./client.js";
+export { ClessiraClient } from "./client.js";
 export {
-  NowDoingError,
-  NowDoingHttpError,
-  NowDoingAuthError,
-  NowDoingValidationError,
-  NowDoingNotFoundError,
-  NowDoingReplayError,
-  NowDoingUnavailableError,
+  ClessiraError,
+  ClessiraHttpError,
+  ClessiraAuthError,
+  ClessiraValidationError,
+  ClessiraNotFoundError,
+  ClessiraReplayError,
+  ClessiraUnavailableError,
 } from "./errors.js";
 export type {
   ActivitySearchItem,
@@ -14,7 +14,7 @@ export type {
   CurrentActivity,
   LogEntryRequest,
   LogEntryResult,
-  NowDoingClientOptions,
+  ClessiraClientOptions,
   SearchActivitiesOptions,
   StartActivityRequest,
   StartActivityResult,

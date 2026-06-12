@@ -8,7 +8,7 @@ from typing import Any
 from urllib.parse import urlencode
 
 from ._auth import make_nonce, sign_request, timestamp_seconds
-from .errors import NowDoingError, NowDoingHttpError, map_http_error
+from .errors import ClessiraError, ClessiraHttpError, map_http_error
 from .models import (
     ActivitySearchItem,
     CurrentActivity,
@@ -29,20 +29,20 @@ def resolve_config(
     port: int | None,
     host: str | None,
 ) -> tuple[str, str]:
-    """Returns (token, base_url) or raises NowDoingError on misconfiguration."""
-    resolved_token = (token or os.environ.get("NOWDOING_TOKEN") or "").strip()
+    """Returns (token, base_url) or raises ClessiraError on misconfiguration."""
+    resolved_token = (token or os.environ.get("CLESSIRA_TOKEN") or "").strip()
     if not resolved_token:
-        raise NowDoingError(
-            "NowDoingClient: token is required (pass token= or set NOWDOING_TOKEN).",
+        raise ClessiraError(
+            "ClessiraClient: token is required (pass token= or set CLESSIRA_TOKEN).",
         )
 
     if port is None:
-        env_port = os.environ.get("NOWDOING_PORT", "").strip()
+        env_port = os.environ.get("CLESSIRA_PORT", "").strip()
         resolved_port = int(env_port) if env_port else DEFAULT_PORT
     else:
         resolved_port = port
     if not (1 <= resolved_port <= 65535):
-        raise NowDoingError(f"NowDoingClient: invalid port {resolved_port}.")
+        raise ClessiraError(f"ClessiraClient: invalid port {resolved_port}.")
 
     resolved_host = host or DEFAULT_HOST
     return resolved_token, f"http://{resolved_host}:{resolved_port}"
@@ -72,10 +72,10 @@ def build_request(
         body=body_bytes,
     )
     headers = {
-        "X-NowDoing-Token": token,
-        "X-NowDoing-Timestamp": timestamp,
-        "X-NowDoing-Nonce": nonce,
-        "X-NowDoing-Signature": signature,
+        "X-Clessira-Token": token,
+        "X-Clessira-Timestamp": timestamp,
+        "X-Clessira-Nonce": nonce,
+        "X-Clessira-Signature": signature,
     }
     if body is not None:
         headers["Content-Type"] = "application/json; charset=utf-8"
@@ -133,7 +133,7 @@ def parse_search(payload: Any) -> list[ActivitySearchItem]:
 
 def parse_start_result(payload: Any) -> StartActivityResult:
     if not isinstance(payload, dict) or "result" not in payload:
-        raise NowDoingHttpError(500, "missing result in /activities/start response")
+        raise ClessiraHttpError(500, "missing result in /activities/start response")
     result = payload["result"]
     return StartActivityResult(
         activity_id=result["activityID"],
@@ -148,7 +148,7 @@ def build_start_body(
     create_if_missing: bool,
 ) -> dict[str, Any]:
     if activity_id is None and name is None:
-        raise NowDoingError("start_activity: provide either activity_id or name.")
+        raise ClessiraError("start_activity: provide either activity_id or name.")
     body: dict[str, Any] = {"createIfMissing": create_if_missing}
     if activity_id is not None:
         body["activityID"] = activity_id
@@ -159,7 +159,7 @@ def build_start_body(
 
 def parse_status(payload: Any) -> Status:
     if not isinstance(payload, dict) or "result" not in payload:
-        raise NowDoingHttpError(500, "missing result in /status response")
+        raise ClessiraHttpError(500, "missing result in /status response")
     result = payload["result"]
     activity_payload = result.get("currentActivity")
     activity: StatusActivity | None
@@ -180,7 +180,7 @@ def parse_status(payload: Any) -> Status:
 
 def parse_log_entry_result(payload: Any) -> LogEntryResult:
     if not isinstance(payload, dict) or "result" not in payload:
-        raise NowDoingHttpError(500, "missing result in /entries response")
+        raise ClessiraHttpError(500, "missing result in /entries response")
     result = payload["result"]
     return LogEntryResult(
         entry_id=result["entryID"],
@@ -199,9 +199,9 @@ def build_log_entry_body(
     create_if_missing: bool,
 ) -> dict[str, Any]:
     if activity_id is None and name is None:
-        raise NowDoingError("log_entry: provide either activity_id or name.")
+        raise ClessiraError("log_entry: provide either activity_id or name.")
     if not isinstance(duration_minutes, int) or duration_minutes <= 0:
-        raise NowDoingError("log_entry: duration_minutes must be a positive integer.")
+        raise ClessiraError("log_entry: duration_minutes must be a positive integer.")
     body: dict[str, Any] = {
         "durationMinutes": duration_minutes,
         "createIfMissing": create_if_missing,
@@ -221,7 +221,7 @@ def build_branch_body(
     previous_branch: str | None,
 ) -> dict[str, Any]:
     if not branch or not branch.strip():
-        raise NowDoingError("notify_branch_change: branch is required.")
+        raise ClessiraError("notify_branch_change: branch is required.")
     body: dict[str, Any] = {"branch": branch}
     if repo is not None:
         body["repo"] = repo

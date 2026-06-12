@@ -63,10 +63,10 @@ export interface LogEntryResult {
   created: boolean;
 }
 
-export interface NowDoingClientOptions {
-  /** Shared secret from NowDoing → Einstellungen → Integrationen. Falls back to `NOWDOING_TOKEN`. */
+export interface ClessiraClientOptions {
+  /** Shared secret from Clessira → Einstellungen → Integrationen. Falls back to `CLESSIRA_TOKEN`. */
   token?: string;
-  /** Loopback port the Mac app listens on. Falls back to `NOWDOING_PORT`, default 39847. */
+  /** Loopback port the Mac app listens on. Falls back to `CLESSIRA_PORT`, default 39847. */
   port?: number;
   /** Bind host. Defaults to `127.0.0.1`. */
   host?: string;

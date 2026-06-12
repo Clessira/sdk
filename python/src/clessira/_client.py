@@ -1,4 +1,4 @@
-"""Synchronous NowDoing HTTP client."""
+"""Synchronous Clessira HTTP client."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ from ._base import (
     parse_status,
     resolve_config,
 )
-from .errors import NowDoingError
+from .errors import ClessiraError
 from .models import (
     ActivitySearchItem,
     CurrentActivity,
@@ -32,12 +32,12 @@ from .models import (
 )
 
 
-class NowDoingClient:
-    """Synchronous client for the NowDoing loopback HTTP API.
+class ClessiraClient:
+    """Synchronous client for the Clessira loopback HTTP API.
 
     Example::
 
-        with NowDoingClient(token="...") as client:
+        with ClessiraClient(token="...") as client:
             client.healthcheck()
             current = client.get_current()
     """
@@ -56,7 +56,7 @@ class NowDoingClient:
         self._owns_http = http_client is None
         self._http: httpx.Client = http_client or httpx.Client(timeout=timeout)
 
-    def __enter__(self) -> "NowDoingClient":
+    def __enter__(self) -> "ClessiraClient":
         return self
 
     def __exit__(
@@ -141,5 +141,5 @@ class NowDoingClient:
                 content=body_bytes if body is not None else None,
             )
         except httpx.HTTPError as exc:
-            raise NowDoingError(f"network error: {exc}") from exc
+            raise ClessiraError(f"network error: {exc}") from exc
         return handle_response(response.status_code, response.text)

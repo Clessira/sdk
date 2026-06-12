@@ -1,7 +1,7 @@
 name: release-sdk-js
 
 # Triggered manually by pushing a tag like `sdk-js-v0.1.0`.
-# Requires npm Trusted Publishing to be configured for @nowdoing/sdk
+# Requires npm Trusted Publishing to be configured for @clessira/sdk
 # (https://docs.npmjs.com/trusted-publishers) — no NPM_TOKEN secret needed.
 
 on:

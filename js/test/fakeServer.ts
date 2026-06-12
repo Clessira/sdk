@@ -46,10 +46,10 @@ export async function startFakeServer(
       const [path, query = ""] = target.split("?", 2) as [string, string?];
 
       const headers = req.headers as Record<string, string | undefined>;
-      const headerToken = headers["x-nowdoing-token"]?.trim() ?? "";
-      const headerTs = headers["x-nowdoing-timestamp"]?.trim() ?? "";
-      const headerNonce = headers["x-nowdoing-nonce"]?.trim().toLowerCase() ?? "";
-      const headerSig = headers["x-nowdoing-signature"]?.trim().toLowerCase() ?? "";
+      const headerToken = headers["x-clessira-token"]?.trim() ?? "";
+      const headerTs = headers["x-clessira-timestamp"]?.trim() ?? "";
+      const headerNonce = headers["x-clessira-nonce"]?.trim().toLowerCase() ?? "";
+      const headerSig = headers["x-clessira-signature"]?.trim().toLowerCase() ?? "";
 
       const respond = (status: number, payload: unknown): void => {
         const out = JSON.stringify(payload);

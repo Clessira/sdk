@@ -1,12 +1,12 @@
 import { makeNonce, signRequest, timestampSeconds } from "./auth.js";
-import { NowDoingError, mapHttpError } from "./errors.js";
+import { ClessiraError, mapHttpError } from "./errors.js";
 import type {
   ActivitySearchItem,
   BranchChangePayload,
   CurrentActivity,
   LogEntryRequest,
   LogEntryResult,
-  NowDoingClientOptions,
+  ClessiraClientOptions,
   SearchActivitiesOptions,
   StartActivityRequest,
   StartActivityResult,
@@ -26,28 +26,28 @@ interface SearchResponse {
   items: ActivitySearchItem[];
 }
 
-export class NowDoingClient {
+export class ClessiraClient {
   private readonly token: string;
   private readonly baseUrl: string;
   private readonly timeoutMs: number;
   private readonly fetchImpl: typeof fetch;
 
-  constructor(options: NowDoingClientOptions = {}) {
-    const rawToken = options.token ?? process.env.NOWDOING_TOKEN;
+  constructor(options: ClessiraClientOptions = {}) {
+    const rawToken = options.token ?? process.env.CLESSIRA_TOKEN;
     const trimmed = (rawToken ?? "").trim();
     if (!trimmed) {
-      throw new NowDoingError(
-        "NowDoingClient: token is required (pass options.token or set NOWDOING_TOKEN).",
+      throw new ClessiraError(
+        "ClessiraClient: token is required (pass options.token or set CLESSIRA_TOKEN).",
       );
     }
     this.token = trimmed;
 
-    const envPort = (process.env.NOWDOING_PORT ?? "").trim();
+    const envPort = (process.env.CLESSIRA_PORT ?? "").trim();
     const port =
       options.port ??
       (envPort.length > 0 ? Number.parseInt(envPort, 10) : DEFAULT_PORT);
     if (!Number.isInteger(port) || port < 1 || port > 65535) {
-      throw new NowDoingError(`NowDoingClient: invalid port ${port}.`);
+      throw new ClessiraError(`ClessiraClient: invalid port ${port}.`);
     }
     const host = options.host ?? DEFAULT_HOST;
     this.baseUrl = `http://${host}:${port}`;
@@ -55,8 +55,8 @@ export class NowDoingClient {
 
     const candidate = options.fetch ?? globalThis.fetch;
     if (typeof candidate !== "function") {
-      throw new NowDoingError(
-        "NowDoingClient: no fetch implementation available (require Node ≥ 18 or pass options.fetch).",
+      throw new ClessiraError(
+        "ClessiraClient: no fetch implementation available (require Node ≥ 20 or pass options.fetch).",
       );
     }
     this.fetchImpl = candidate;
@@ -94,7 +94,7 @@ export class NowDoingClient {
     request: StartActivityRequest,
   ): Promise<StartActivityResult> {
     if (!request.activityID && !request.name) {
-      throw new NowDoingError(
+      throw new ClessiraError(
         "startActivity: provide either activityID or name.",
       );
     }
@@ -110,7 +110,7 @@ export class NowDoingClient {
       body,
     );
     if (!data.result) {
-      throw new NowDoingError("startActivity: missing result in response.");
+      throw new ClessiraError("startActivity: missing result in response.");
     }
     return data.result;
   }
@@ -122,20 +122,20 @@ export class NowDoingClient {
   async getStatus(): Promise<Status> {
     const data = await this.request<RequestEnvelope<Status>>("GET", "/status");
     if (!data.result) {
-      throw new NowDoingError("getStatus: missing result in response.");
+      throw new ClessiraError("getStatus: missing result in response.");
     }
     return data.result;
   }
 
   async logEntry(request: LogEntryRequest): Promise<LogEntryResult> {
     if (!request.activityID && !request.name) {
-      throw new NowDoingError("logEntry: provide either activityID or name.");
+      throw new ClessiraError("logEntry: provide either activityID or name.");
     }
     if (
       !Number.isInteger(request.durationMinutes) ||
       request.durationMinutes <= 0
     ) {
-      throw new NowDoingError(
+      throw new ClessiraError(
         "logEntry: durationMinutes must be a positive integer.",
       );
     }
@@ -153,14 +153,14 @@ export class NowDoingClient {
       body,
     );
     if (!data.result) {
-      throw new NowDoingError("logEntry: missing result in response.");
+      throw new ClessiraError("logEntry: missing result in response.");
     }
     return data.result;
   }
 
   async notifyBranchChange(payload: BranchChangePayload): Promise<void> {
     if (!payload.branch || !payload.branch.trim()) {
-      throw new NowDoingError("notifyBranchChange: branch is required.");
+      throw new ClessiraError("notifyBranchChange: branch is required.");
     }
     const body: Record<string, unknown> = { branch: payload.branch };
     if (payload.repo !== undefined) body.repo = payload.repo;
@@ -190,10 +190,10 @@ export class NowDoingClient {
     });
 
     const headers: Record<string, string> = {
-      "X-NowDoing-Token": this.token,
-      "X-NowDoing-Timestamp": timestamp,
-      "X-NowDoing-Nonce": nonce,
-      "X-NowDoing-Signature": signature,
+      "X-Clessira-Token": this.token,
+      "X-Clessira-Timestamp": timestamp,
+      "X-Clessira-Nonce": nonce,
+      "X-Clessira-Signature": signature,
     };
     if (hasBody) {
       headers["Content-Type"] = "application/json; charset=utf-8";
@@ -212,7 +212,7 @@ export class NowDoingClient {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : String(error ?? "unknown");
-      throw new NowDoingError(`NowDoingClient: network error: ${message}`, {
+      throw new ClessiraError(`ClessiraClient: network error: ${message}`, {
         cause: error,
       });
     } finally {
