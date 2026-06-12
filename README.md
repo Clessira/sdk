@@ -59,4 +59,4 @@ in the Mac app repo; when it changes, both SDKs must move in lockstep.
 
 ## License
 
-Same license as the Mac app — see [NowDoingMac](https://github.com/Clessira/NowDoingMac).
+Same license as the Mac app — see [Clessira](https://github.com/Clessira/NowDoingMac).
